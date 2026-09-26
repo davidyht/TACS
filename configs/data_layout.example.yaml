@@ -1,0 +1,11 @@
+data_dir: /path/to/data
+output_dir: /path/to/runs
+train_files:
+  flan_v2: /path/to/data/train/flan_v2.jsonl
+  cot: /path/to/data/train/cot.jsonl
+  oasst1: /path/to/data/train/oasst1.jsonl
+  dolly: /path/to/data/train/dolly.jsonl
+eval_dirs:
+  bbh: /path/to/data/eval/bbh
+  mmlu: /path/to/data/eval/mmlu
+  tydiqa: /path/to/data/eval/tydiqa

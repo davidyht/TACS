@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments
+.venv/
+venv/
+*.egg-info/
+
+# OS/editor files
+.DS_Store
+
+# Generated outputs
+logs/
+runs/
+out/
+outputs/
+artifacts/
+analysis_outputs/
+selected_data/
+score_cache/
+grads/
+wandb/
+
+# Data and checkpoints
+data/train/
+data/eval/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+
+# Generated figures and paper artifacts
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.svg

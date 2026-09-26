@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tacs"
+version = "0.1.0"
+description = "Target-aligned candidate selection research code and experiment runners."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+  "accelerate",
+  "datasets",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "peft",
+  "scikit-learn",
+  "scipy",
+  "seaborn",
+  "torch",
+  "torchvision",
+  "tqdm",
+  "traker[fast]",
+  "transformers",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["tacs*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
