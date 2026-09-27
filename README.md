@@ -1,11 +1,19 @@
-# TACS
+# TACS: Data Selection via Target-Aligned Paths
 
 Code for **Let the Target Select for Itself: Data Selection via Target-Aligned Paths**.
 
-TACS adapts a small LoRA module on a target validation proxy, chooses how far to
-follow that path, and ranks candidate examples by their normalized loss drop
-between two reference checkpoints. Candidate scoring uses forward passes. The
-selected subset is then used for ordinary fine-tuning.
+Targeted data selection depends on the model states used to judge candidate
+examples. TACS studies this *reference-path dependence*: changing the warmup
+data can change candidate rankings and selected subsets even when the pool,
+target task, and scoring rule stay fixed.
+
+TACS builds a short, low-capacity reference path from a compact target-validation
+proxy and calibrates its depth to the target task. It ranks candidates by their
+normalized loss reduction between the path's endpoints. The path can be reused
+across candidate pools, and candidate scoring requires only forward passes.
+The selected subset is then used for ordinary fine-tuning. The repository
+includes the controlled logistic and vision studies and the instruction-tuning
+workflow used in the paper.
 
 ## Install
 
