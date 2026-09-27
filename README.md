@@ -15,6 +15,16 @@ The selected subset is then used for ordinary fine-tuning. The repository
 includes the controlled logistic and vision studies and the instruction-tuning
 workflow used in the paper.
 
+## Method at a glance
+
+<p align="center">
+  <img src="assets/tacs_pipeline.png" alt="TACS method pipeline: target proxy, low-capacity warmup, reusable reference endpoints, candidate loss scoring, and top-N selection" width="620">
+</p>
+
+The target proxy drives a low-capacity warmup path. Its frozen endpoints are
+reused to score each candidate pool by normalized loss reduction, then the
+highest-scoring examples form the training subset (Figure 1b in the paper).
+
 ## Install
 
 ```bash

@@ -40,3 +40,4 @@ data/eval/
 *.jpg
 *.jpeg
 *.svg
+!assets/tacs_pipeline.png
