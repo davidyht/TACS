@@ -2,6 +2,8 @@
 
 Code for **Let the Target Select for Itself: Data Selection via Target-Aligned Paths**.
 
+**[Paper](https://arxiv.org/abs/2605.09404)** · **[Reproduction guide](docs/reproduce.md)** · **[Protocol](configs/paper_protocol.json)**
+
 Targeted data selection depends on the model states used to judge candidate
 examples. TACS studies this *reference-path dependence*: changing the warmup
 data can change candidate rankings and selected subsets even when the pool,
@@ -25,7 +27,31 @@ The target proxy drives a low-capacity warmup path. Its frozen endpoints are
 reused to score each candidate pool by normalized loss reduction, then the
 highest-scoring examples form the training subset (Figure 1b in the paper).
 
-## Install
+1. **Build a target path.** Warm up a rank-one adapter on a small target proxy;
+   use held-out folds to choose the path depth and learning rate.
+2. **Score each pool.** Freeze the selected path's endpoints and measure each
+   candidate's normalized loss reduction with forward passes.
+3. **Train on the subset.** Select the highest-scoring 5% of each candidate
+   pool, then fine-tune and evaluate the downstream model.
+
+## Instruction-tuning results
+
+Llama-3.2-3B results from Table 1 of the final paper. Values are mean ± standard
+deviation over three seeds, averaged across four candidate pools. Random, LESS,
+ToV, and TACS each train on a 5% subset; the full-pool result is a separate
+reference using all candidates.
+
+| Target task | Random | LESS | ToV | TACS | Full pool |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| MMLU | 55.72 ± 0.15 | 55.69 ± 0.25 | 54.93 ± 0.05 | **56.08 ± 0.10** | 54.42 |
+| TyDiQA | 48.07 ± 0.03 | 59.69 ± 0.42 | 57.45 ± 0.13 | **60.89 ± 0.33** | 51.97 |
+| BBH | 47.40 ± 0.50 | 47.55 ± 0.19 | **47.86 ± 0.42** | 47.85 ± 0.51 | 47.34 |
+
+TACS has the highest mean subset result on MMLU and TyDiQA. On BBH, its mean
+is within 0.01 points of ToV. See the paper for the task metrics and per-pool
+results.
+
+## Quick start
 
 ```bash
 python -m venv .venv
@@ -34,7 +60,8 @@ pip install -e '.[dev]'
 python -m pytest -q tests
 ```
 
-The synthetic example runs on CPU and generates its own data:
+To try the selection code without model weights or external datasets, run the
+synthetic logistic example on CPU. It generates its own data:
 
 ```bash
 python experiments/logistic_shift/run_logistic_shift_tacs.py \
@@ -81,6 +108,6 @@ providers; outputs are written outside this repository.
 
 ## Citation and attribution
 
-Please cite the accompanying TACS paper. Instruction-tuning utilities adapt
+Please cite the [TACS paper](https://arxiv.org/abs/2605.09404). Instruction-tuning utilities adapt
 code from [LESS](https://github.com/princeton-nlp/LESS); license details are in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
