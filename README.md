@@ -41,15 +41,25 @@ deviation over three seeds, averaged across four candidate pools. Random, LESS,
 ToV, and TACS each train on a 5% subset; the full-pool result is a separate
 reference using all candidates.
 
-| Target task | Random | LESS | ToV | TACS | Full pool |
+| Target task / selection cost | Random | LESS | ToV | TACS | Full pool |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | MMLU | 55.72 ± 0.15 | 55.69 ± 0.25 | 54.93 ± 0.05 | **56.08 ± 0.10** | 54.42 |
 | TyDiQA | 48.07 ± 0.03 | 59.69 ± 0.42 | 57.45 ± 0.13 | **60.89 ± 0.33** | 51.97 |
 | BBH | 47.40 ± 0.50 | 47.55 ± 0.19 | **47.86 ± 0.42** | 47.85 ± 0.51 | 47.34 |
+| Selection GPU h (all 12 pool–target settings) | — | 187.35 | 124.74 | **58.46** | — |
+| Selection compute speedup vs LESS | — | 1.00× | 1.50× | **3.20×** | — |
+| Scoring payload | — | 35,480 MB | 26.0 MB | **6.5 MB** | — |
 
 TACS has the highest mean subset result on MMLU and TyDiQA. On BBH, its mean
 is within 0.01 points of ToV. See the paper for the task metrics and per-pool
-results.
+results. Its selection compute has a **3.20× speedup over LESS** and **2.13×
+over ToV** in the measured four-pool, three-target workload. Speedup is
+the comparison method's selection GPU-hours divided by TACS's 58.46 GPU-hours;
+the table's speedup row uses LESS as the common reference. Selection GPU-hours
+include calibration, final reference construction, and candidate scoring, but
+exclude downstream fine-tuning. Scoring payload is the candidate-scoring
+artifact size, not total experiment storage. Random and full-pool training do
+not have comparable selector-pipeline costs in this accounting.
 
 ## Quick start
 
